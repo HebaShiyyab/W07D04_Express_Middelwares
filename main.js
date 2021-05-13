@@ -2,6 +2,8 @@ const express = require("express");
 const app = express();
 const port = 5000;
 const users = ["John", "Mark"];
+const products =["keyBoard","mouse"]
+const router = express.Router();
 app.use(express.json());
 const logUsers = (req, res, next) => {
   console.log(users);
@@ -32,6 +34,37 @@ app.use((err, req, res, next) => {
     next();
   }
 });
+
+router.use((req, res, next) => {
+  console.log(req.users);
+  next();
+});
+router.post("/users/creat", (req, res, next) => {
+    const name = req.body.name;
+    products.push(name);
+  console.log(products);
+  next();
+});
+const methodType = (req,res,next) => {
+    console.log(req.method);
+    next();
+};
+router.use((req,res,next)=>{
+    console.log('Test ');
+    next()
+})
+
+router.use("/",(req,res,next)=>{
+    console.log("anther");
+})
+router.post("/login",methodType,(req,res)=>{
+    res.json('Login successful')
+
+})
+app.use("/about",router);
+// app.use("/products/update")
+// app.use("/products", router);
+// app.use("/users", router);
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
